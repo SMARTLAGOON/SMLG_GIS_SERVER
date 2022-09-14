@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title>Smartlagoon - Vielca Ingenieros</title>
+        <link rel="icon" type="image/x-icon" href="images/favicon-nobg.png">
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin=""/>
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+        <!-- Ruler -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css" integrity="sha384-P9DABSdtEY/XDbEInD3q+PlL+BjqPCXGcF8EkhtKSfSTr/dS5PBKa9+/PMkW2xsY" crossorigin="anonymous">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles.css">
+        <!-- ZoomBox -->
+        <link rel="stylesheet" href="boxzoom/leaflet-control-boxzoom.css" />
+        <!-- Opacity -->
+        <link rel="stylesheet" href="opacity/Control.Opacity.css" />
+        <!-- Show coordinates -->
+        <link rel="stylesheet" href="show_coordinates/Leaflet.Coordinates-0.1.5.css" />
+        <!-- Draw on map -->
+        <link rel='stylesheet' href='draw/leaflet.draw-src.css'/>
+        <!-- Zoom history -->
+        <link rel="stylesheet" type="text/css" href="history/leaflet-history.css">
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+            <nav id="sidebar">
+                <div id="dismiss">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </div>
+
+                <div class="sidebar-header">
+                    <h3>Smartlagoon</h3>
+                </div>
+
+                <!-- Layers menu -->
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Layers</a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu">
+                            <ul class="radio">
+                                <li><label><input type="radio" name="check" id="satellite" checked>Satellite</label></li>
+                                <li><label><input type="radio" name="check" id="street">Open Street Map</label></li>
+                                <li><label><input type="radio" name="check" id="gray">Gray</label></li>
+                            </ul>
+                            <li>
+                                <a href="#groupSubmenu1" data-toggle="collapse" aria-expanded="false">Climate</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu1">
+                                    <ul id="climate"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu2" data-toggle="collapse" aria-expanded="false">Environmental protection</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu2">
+                                    <ul id="environmental_protection"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu3" data-toggle="collapse" aria-expanded="false">Fishing</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu3">
+                                    <ul id="fishing"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu4" data-toggle="collapse" aria-expanded="false">Hydrology</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu4">
+                                    <ul id="hydrology"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu5" data-toggle="collapse" aria-expanded="false">Land uses</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu5">
+                                    <ul id="land_uses"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu6" data-toggle="collapse" aria-expanded="false">Recovery measures</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu6">
+                                    <ul id="recovery_measures"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu7" data-toggle="collapse" aria-expanded="false">Reference cartography</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu7">
+                                    <ul id="reference_cartography"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu8" data-toggle="collapse" aria-expanded="false">Terrain</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu8">
+                                    <ul id="terrain"></ul>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#groupSubmenu9" data-toggle="collapse" aria-expanded="false">Water quality</a>
+                                <ul class="collapse list-unstyled" id="groupSubmenu9">
+                                    <ul id="water_quality"></ul>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- Instructions menu-->
+                <ul class="list-unstyled components">
+                    <li>
+                        <a href="#instructionSubmenu" data-toggle="collapse" aria-expanded="false">Instructions</a>
+                        <ul class="collapse list-unstyled" id="instructionSubmenu">
+                            <li>
+                                <li>
+                                    <a href="#history" data-toggle="collapse" aria-expanded="false"><img src="images/history.PNG" style="width: 30px; height: 20px; border-radius: 4px;"> Zooming history</a>
+                                    <ul class="collapse list-unstyled" id="history">
+                                        <ul><label>Click back and forward buttons to go to previous or next extent</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#squarezoom" data-toggle="collapse" aria-expanded="false"><img src="images/squarezoom.PNG" style="width: 30px; height: 30px; border-radius: 4px;"> Square zooming</a>
+                                    <ul class="collapse list-unstyled" id="squarezoom">
+                                        <ul><label>Draw a square on the map to zoom in to an area. One-time zoom per icon click</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#ruler" data-toggle="collapse" aria-expanded="false"><img src="images/ruler.PNG" style="width: 30px; height: 30px; border-radius: 4px;"> Ruler</a>
+                                    <ul class="collapse list-unstyled" id="ruler">
+                                        <ul><label>Ruler for the distance and bearing measuring. Press ESC or double-click to stop using the ruler, and press ESC again to clean the map</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#opacity" data-toggle="collapse" aria-expanded="false"><img src="images/opacity.PNG" style="width: 100px; height: 20px; border-radius: 4px;"> Opacity</a>
+                                    <ul class="collapse list-unstyled" id="opacity">
+                                        <ul><label>Change the transparency of all active layers by sliding through the slider</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#coordinates" data-toggle="collapse" aria-expanded="false"><img src="images/coordinates.PNG" style="width: 200px; height: 17px; border-radius: 4px;"></a>
+                                    <ul class="collapse list-unstyled" id="coordinates">
+                                        <ul><label>Hover the mouse on the map to see live longitude and latitude, or click on the icon to put your ones to put a marker on the map</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#print" data-toggle="collapse" aria-expanded="false"> Print the map</a>
+                                    <ul class="collapse list-unstyled" id="print">
+                                        <ul><label>Use the shortcut CTRL+P to print the map</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#sort" data-toggle="collapse" aria-expanded="false"> Sort layers</a>
+                                    <ul class="collapse list-unstyled" id="sort">
+                                        <ul><label>Sort the layers or the groups of the layers by pressing, holding and moving them up or down in the list of layers. Layers on top of the list show up on top of other layers on the map</label></ul>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#data" data-toggle="collapse" aria-expanded="false"> See data</a>
+                                    <ul class="collapse list-unstyled" id="data">
+                                        <ul><label>Click on any layer on the map to see the popup with all the information about each layer. Be aware that order of the layers does not affect order of the popups.</label></ul>
+                                    </ul>
+                                </li>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Links -->
+                <ul class="list-unstyled CTAs">
+                    <li><a href="http://www.vielca.com/web/" class="download" target="blank">vielca.com</a></li>
+                </ul>
+
+            </nav>
+
+            <!-- Page Content Holder -->
+            <div id="content" style="height: 100%;">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid" style="position: relative;">
+                        <div class="navbar-header">
+                            <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                                <i class="glyphicon glyphicon-align-left"></i>
+                                <span id="sidebar-button">Layers</span>
+                            </button>
+                            <img src="images/VIELCA-ingenieros-5cm.jpg" alt="VIELCA Ingenieros" style="height: 30px; width: 80px; margin-left: 15px;">
+                            <img src="images/smartlagoon.png" alt="Smartlagoon" style="height: 37px; width: 100px; margin-left: 15px;">
+                            <span><label id="title" ><h3>Geoportal "Smartlagoon"</h3></label></span>
+                        </div>
+                    </div>
+                </nav>
+                <div id="map"></div>
+                <div>
+                    <p id="copywrite">© 2022 VIELCA INGENIEROS - Avenida de Aragón 17. 46010 VALENCIA (SPAIN) - T. +34 963 604 285 - F. +34 963 619 744</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<!-- Bootstrap Js CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- jQuery Custom Scroller CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<!-- Sidebar -->
+<script type="text/javascript" src="sidebar.js"></script>
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+crossorigin=""></script>
+<!-- Ruler -->
+<script src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
+integrity="sha384-N2S8y7hRzXUPiepaSiUvBH1ZZ7Tc/ZfchhbPdvOE5v3aBBCIepq9l+dBJPFdo1ZJ"
+crossorigin="anonymous"></script>
+<!-- ZoomBox -->
+<script src="boxzoom/leaflet-control-boxzoom.js"></script>
+<!-- Zoom history -->
+<script type="text/javascript" src="history/leaflet-history.js"></script>
+<!-- Show coordinates -->
+<script src="show_coordinates/Leaflet.Coordinates-0.1.5.min.js"></script>
+<!-- Draw on map -->
+<script src='draw/leaflet.draw-src.js'></script>
+<!-- Custom Js -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script type="text/javascript" src="L.TileLayer.BetterWMS.js"></script>
+<script type="text/javascript" src="layersData.js"></script>
+<script src="groups.js"></script>
+<script type="text/javascript" src="legends.js"></script>
+<script src="opacity/Control.Opacity.js"></script>
+<script src="jquery/jquery-ui-1.10.3.custom.min.js"></script>
+<link rel="stylesheet" href="jquery/jquery-ui-1.10.3.custom.min.css" />
+<script type="text/javascript" src="map.js"></script>
+
